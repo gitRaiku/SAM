@@ -516,8 +516,10 @@ void Parser2() {
       LOG("Changerule UL-> AX L %u", pos);
     } else if (p == 79) {
       ChangeRule(pos, 27, "UM -> AX M"); // Example: ASTRONOMY
+      LOG("Changerule UM-> AX M %u", pos);
     } else if (p == 80) {
       ChangeRule(pos, 28, "UN -> AX N"); // Example: FUNCTION
+      LOG("Changerule UN-> AX N %u", pos);
     } else if ((pf & FLAG_VOWEL) && G(stress,pos)) {
       // RULE:
       //       <STRESSED VOWEL> <SILENCE> <STRESSED VOWEL> -> <STRESSED VOWEL>
