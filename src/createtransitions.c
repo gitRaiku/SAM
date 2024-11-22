@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "str.h"
+
 // CREATE TRANSITIONS
 //
 // Linear transitions are now created to smoothly connect each
@@ -37,22 +39,22 @@
 // phoneme.
 
 // From render.c
-extern unsigned char phonemeIndexOutput[60];  // tab47296
-extern unsigned char phonemeLengthOutput[60]; // tab47416
+extern struct str *__restrict phonemeIndexOutput;  // tab47296
+extern struct str *__restrict phonemeLengthOutput; // tab47416
 
 // from RenderTabs.h
-extern unsigned char blendRank[];
-extern unsigned char outBlendLength[];
-extern unsigned char inBlendLength[];
-extern unsigned char pitches[];
+extern struct str *__restrict blendRank;
+extern struct str *__restrict outBlendLength;
+extern struct str *__restrict inBlendLength;
+extern struct str *__restrict pitches;
 
-extern unsigned char frequency1[256];
-extern unsigned char frequency2[256];
-extern unsigned char frequency3[256];
+extern struct str *__restrict frequency1;
+extern struct str *__restrict frequency2;
+extern struct str *__restrict frequency3;
 
-extern unsigned char amplitude1[256];
-extern unsigned char amplitude2[256];
-extern unsigned char amplitude3[256];
+extern struct str *__restrict amplitude1;
+extern struct str *__restrict amplitude2;
+extern struct str *__restrict amplitude3;
 
 // written by me because of different table positions.
 //  mem[47] = ...
@@ -66,19 +68,19 @@ extern unsigned char amplitude3[256];
 unsigned char Read(unsigned char p, unsigned char Y) {
   switch (p) {
   case 168:
-    return pitches[Y];
+    return G(pitches,Y);
   case 169:
-    return frequency1[Y];
+    return G(frequency1,Y);
   case 170:
-    return frequency2[Y];
+    return G(frequency2,Y);
   case 171:
-    return frequency3[Y];
+    return G(frequency3,Y);
   case 172:
-    return amplitude1[Y];
+    return G(amplitude1,Y);
   case 173:
-    return amplitude2[Y];
+    return G(amplitude2,Y);
   case 174:
-    return amplitude3[Y];
+    return G(amplitude3,Y);
   default:
     printf("Error reading from tables");
     return 0;
@@ -88,25 +90,25 @@ unsigned char Read(unsigned char p, unsigned char Y) {
 void Write(unsigned char p, unsigned char Y, unsigned char value) {
   switch (p) {
   case 168:
-    pitches[Y] = value;
+    strs(pitches, Y, value);
     return;
   case 169:
-    frequency1[Y] = value;
+    strs(frequency1, Y, value);
     return;
   case 170:
-    frequency2[Y] = value;
+    strs(frequency2, Y, value);
     return;
   case 171:
-    frequency3[Y] = value;
+    strs(frequency3, Y, value);
     return;
   case 172:
-    amplitude1[Y] = value;
+    strs(amplitude1, Y, value);
     return;
   case 173:
-    amplitude2[Y] = value;
+    strs(amplitude2, Y, value);
     return;
   case 174:
-    amplitude3[Y] = value;
+    strs(amplitude3, Y, value);
     return;
   default:
     printf("Error writing to tables\n");
@@ -115,15 +117,15 @@ void Write(unsigned char p, unsigned char Y, unsigned char value) {
 }
 
 // linearly interpolate values
-void interpolate(unsigned char width, unsigned char table, unsigned char frame,
-                 char mem53) {
-  unsigned char sign = (mem53 < 0);
-  unsigned char remainder = abs(mem53) % width;
-  unsigned char div = mem53 / width;
+void interpolate(uint32_t width, uint32_t table, uint32_t frame,
+                 uint32_t mem53) {
+  uint32_t sign = (mem53 < 0);
+  uint32_t remainder = abs(mem53) % width;
+  uint32_t div = mem53 / width;
 
-  unsigned char error = 0;
-  unsigned char pos = width;
-  unsigned char val = Read(table, frame) + div;
+  uint32_t error = 0;
+  uint32_t pos = width;
+  uint32_t val = Read(table, frame) + div;
 
   while (--pos) {
     error += remainder;
@@ -146,11 +148,11 @@ void interpolate_pitch(unsigned char pos, unsigned char mem49,
   // next phoneme
 
   // half the width of the current and next phoneme
-  unsigned char cur_width = phonemeLengthOutput[pos] / 2;
-  unsigned char next_width = phonemeLengthOutput[pos + 1] / 2;
+  unsigned char cur_width = G(phonemeLengthOutput,pos) / 2;
+  unsigned char next_width = G(phonemeLengthOutput,pos + 1) / 2;
   // sum the values
   unsigned char width = cur_width + next_width;
-  char pitch = pitches[next_width + mem49] - pitches[mem49 - cur_width];
+  char pitch = G(pitches,next_width + mem49) - G(pitches,mem49 - cur_width);
   interpolate(width, 168, phase3, pitch);
 }
 
@@ -166,33 +168,33 @@ unsigned char CreateTransitions() {
     unsigned char phase3;
     unsigned char transition;
 
-    unsigned char phoneme = phonemeIndexOutput[pos];
-    unsigned char next_phoneme = phonemeIndexOutput[pos + 1];
+    unsigned char phoneme = G(phonemeIndexOutput,pos);
+    unsigned char next_phoneme = G(phonemeIndexOutput,pos + 1);
 
     if (next_phoneme == 255)
       break; // 255 == end_token
 
     // get the ranking of each phoneme
-    next_rank = blendRank[next_phoneme];
-    rank = blendRank[phoneme];
+    next_rank = G(blendRank,next_phoneme);
+    rank = G(blendRank,phoneme);
 
     // compare the rank - lower rank value is stronger
     if (rank == next_rank) {
       // same rank, so use out blend lengths from each phoneme
-      phase1 = outBlendLength[phoneme];
-      phase2 = outBlendLength[next_phoneme];
+      phase1 = G(outBlendLength,phoneme);
+      phase2 = G(outBlendLength,next_phoneme);
     } else if (rank < next_rank) {
       // next phoneme is stronger, so us its blend lengths
-      phase1 = inBlendLength[next_phoneme];
-      phase2 = outBlendLength[next_phoneme];
+      phase1 = G(inBlendLength,next_phoneme);
+      phase2 = G(outBlendLength,next_phoneme);
     } else {
       // current phoneme is stronger, so use its blend lengths
       // note the out/in are swapped
-      phase1 = outBlendLength[phoneme];
-      phase2 = inBlendLength[phoneme];
+      phase1 = G(outBlendLength,phoneme);
+      phase2 = G(inBlendLength,phoneme);
     }
 
-    mem49 += phonemeLengthOutput[pos];
+    mem49 += G(phonemeLengthOutput,pos);
 
     speedcounter = mem49 + phase2;
     phase3 = mem49 - phase1;
@@ -220,5 +222,5 @@ unsigned char CreateTransitions() {
   }
 
   // add the length of this phoneme
-  return mem49 + phonemeLengthOutput[pos];
+  return mem49 + G(phonemeLengthOutput,pos);
 }

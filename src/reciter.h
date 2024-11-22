@@ -1,8 +1,8 @@
 #ifndef RECITER_C
 #define RECITER_C
 
-// int TextToPhonemes(unsigned char *input, unsigned char *output);
+#include "str.h"
 
-int TextToPhonemes(unsigned char *input);
+int TextToPhonemes(struct str *__restrict input);
 
 #endif

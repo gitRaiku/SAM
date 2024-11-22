@@ -13,6 +13,7 @@ void EnableSingmode();
 int SAMMain();
 
 struct str *__restrict GetBuffer();
+uint32_t GetBufferLength();
 
 // char input[]={"/HAALAOAO MAYN NAAMAEAE IHSTT SAEBAASTTIHAAN \x9b\x9b\0"};
 // unsigned char input[]={"/HAALAOAO \x9b\0"};

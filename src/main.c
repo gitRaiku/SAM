@@ -107,22 +107,21 @@ void PrintUsage() {
 
 int pos = 0;
 void MixAudio(void *unused, Uint8 *stream, int len) {
-  int bufferpos = GetBufferLength();
-  char *buffer = GetBuffer();
+  struct str *buffer = GetBuffer();
   int i;
-  if (pos >= bufferpos)
+  if (pos >= buffer->c)
     return;
-  if ((bufferpos - pos) < len)
-    len = (bufferpos - pos);
+  if ((buffer->c - pos) < len)
+    len = (buffer->c - pos);
   for (i = 0; i < len; i++) {
-    stream[i] = buffer[pos];
+    stream[i] = G(buffer,pos);
     pos++;
   }
 }
 
 void OutputSound() {
-  int bufferpos = GetBufferLength();
-  bufferpos /= 50;
+  struct str *buffer = GetBuffer();
+  buffer->c /= 50;
   SDL_AudioSpec fmt;
 
   fmt.freq = 22050;
@@ -140,7 +139,7 @@ void OutputSound() {
   SDL_PauseAudio(0);
   // SDL_Delay((bufferpos)/7);
 
-  while (pos < bufferpos) {
+  while (pos < buffer->c) {
     SDL_Delay(100);
   }
 
@@ -204,7 +203,7 @@ int main(int argc, char **argv) {
     i++;
   }
 
-  for (i = 0; input->s[i] != 0; i++) { input->s[i] = toupper(input->s[i]); }
+  for (i = 0; G(input,i) != 0; i++) { input->s[i] = toupper(G(input,i)); }
 
   if (debug) {
     if (phonetic) { printf("phonetic input: %s\n", input->s); }
@@ -215,7 +214,7 @@ int main(int argc, char **argv) {
     strc(input, "[");
     if (!TextToPhonemes(input)) { return 1; }
     if (debug) { printf("phonetic input: %s\n", input->s); }
-  } else { strc(input->s, "\x9b"); }
+  } else { strc(input, "\x9b"); }
 
 #ifdef USESDL
   if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -226,9 +225,10 @@ int main(int argc, char **argv) {
 #endif
 
   SetInput(input);
-  if (!SAMMain()) { PrintUsage(); return 1; }
+  //if (!SAMMain()) { PrintUsage(); return 1; }
+  if (!SAMMain()) { fprintf(stdout, "SAMMain crashed!\n"); return 1; }
 
-  if (wavfilename != NULL) { WriteWav(wavfilename, GetBuffer(), GetBufferLength() / 50); }
+  if (wavfilename != NULL) { WriteWav(wavfilename, GetBuffer()->s, GetBufferLength() / 50); }
   else { OutputSound(); }
 
   return 0;

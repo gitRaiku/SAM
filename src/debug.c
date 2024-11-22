@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "str.h"
 
 extern unsigned char signInputTable1[];
 extern unsigned char signInputTable2[];
@@ -12,14 +13,15 @@ void PrintPhonemes(struct str *phonemeindex, struct str *phonemeLength,
   printf(" idx    phoneme  length  stress\n");
   printf("------------------------------\n");
 
-  while ((phonemeindex->s[i] != 255) && (i < 255)) {
-    strs(if (phonemeindex, i, < 81) {
-      printf(" %3i      %c%c      %3i       %i\n", phonemeindex->s[i],
-             signInputTable1[phonemeindex->s[i]], signInputTable2[phonemeindex->s[i]],
-             phonemeLength->s[i], stress->s[i]);
+  while (G(phonemeindex,i) != 255) {
+
+		if (G(phonemeindex,i) < 81) {
+      printf(" %3i      %c%c      %3i       %i\n", G(phonemeindex,i),
+             signInputTable1[G(phonemeindex,i)], signInputTable2[G(phonemeindex,i)],
+             G(phonemeLength,i), G(stress,i));
     } else {
-      printf(" %3i      ??      %3i       %i\n", phonemeindex->s[i],
-             phonemeLength->s[i], stress->s[i]);
+      printf(" %3i      ??      %3i       %i\n", G(phonemeindex,i),
+             G(phonemeLength,i), G(stress,i));
     }
     i++;
   }

@@ -15,9 +15,9 @@ extern unsigned char speed;
 extern unsigned char pitch;
 extern int singmode;
 
-extern unsigned char phonemeIndexOutput[60];  // tab47296
-extern unsigned char stressOutput[60];        // tab47365
-extern unsigned char phonemeLengthOutput[60]; // tab47416
+extern struct str *__restrict phonemeIndexOutput;  // tab47296
+extern struct str *__restrict stressOutput;        // tab47365
+extern struct str *__restrict phonemeLengthOutput; // tab47416
 
 unsigned char pitches[256]; // tab43008
 
@@ -184,13 +184,15 @@ static void CreateFrames() {
   unsigned int i = 0;
   while (i < 256) {
     // get the phoneme at the index
-    unsigned char phoneme = phonemeIndexOutput[i];
+    unsigned char phoneme = G(phonemeIndexOutput, i);
     unsigned char phase1;
-    unsigned phase2;
+    unsigned phase2 = 0;
 
     // if terminal phoneme, exit the loop
-    if (phoneme == 255)
+    if (phoneme == 255) {
+      fprintf(stdout, "Broke out at %u\n", i);
       break;
+    }
 
     if (phoneme == PHONEME_PERIOD)
       AddInflection(RISING_INFLECTION, X);
@@ -198,10 +200,11 @@ static void CreateFrames() {
       AddInflection(FALLING_INFLECTION, X);
 
     // get the stress amount (more stress = higher pitch)
-    phase1 = tab47492[stressOutput[i] + 1];
+    phase1 = tab47492[G(stressOutput, i) + 1];
 
     // get number of frames to write
-    phase2 = phonemeLengthOutput[i];
+    phase2 = G(phonemeLengthOutput, i);
+    fprintf(stdout, "Phoneme: %u %u %u\n", phoneme, phase1, phase2);
 
     // copy from the source to the frames list
     do {
@@ -265,7 +268,7 @@ void AssignPitchContour() {
 void Render() {
   unsigned char t;
 
-  if (phonemeIndexOutput[0] == 255)
+  if (G(phonemeIndexOutput, 0) == 255)
     return; // exit if no data
 
   CreateFrames();

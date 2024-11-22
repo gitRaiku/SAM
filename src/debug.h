@@ -1,5 +1,6 @@
 #ifndef DEBUG_H
 #define DEBUG_H
+#include "str.h"
 
 void PrintPhonemes(struct str *phonemeindex, struct str *phonemeLength,
                    struct str *stress);

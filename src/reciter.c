@@ -89,7 +89,7 @@ int handle_ch(unsigned char ch, unsigned char mem) {
   return 0;
 }
 
-int TextToPhonemes(unsigned char *input) {
+int TextToPhonemes(struct str *__restrict input) {
   unsigned char mem56; // output position for phonemes
   unsigned char mem57;
   unsigned char mem58;
@@ -112,7 +112,7 @@ int TextToPhonemes(unsigned char *input) {
   // because input will be overwritten by phonemes
   X = 0;
   do {
-    A = input[X] & 127;
+    A = G(input,X) & 127;
     if (A >= 112)
       A = A & 95;
     else if (A >= 96)
@@ -129,7 +129,7 @@ pos36554:
       mem64 = inputtemp[X];
       if (mem64 == '[') {
         X = ++mem56;
-        input[X] = 155;
+        strs(input, X, 155);
         return 1;
       }
 
@@ -142,7 +142,7 @@ pos36554:
       mem56++;
       X = mem56;
       A = '.';
-      input[X] = '.';
+      strs(input, X, '.');
     }
     mem57 = tab36376[mem64];
     if ((mem57 & 2) != 0) {
@@ -155,10 +155,10 @@ pos36554:
     inputtemp[X] = ' ';
     X = ++mem56;
     if (X > 120) {
-      input[X] = 155;
+      strs(input, X, 155);
       return 1;
     }
-    input[X] = 32;
+    strs(input, X, 32);
   }
 
   if (!(mem57 & 128))
@@ -295,7 +295,7 @@ pos36700:
             mem57 = A = GetRuleByte(mem62, Y);
             A = A & 127;
             if (A != '=')
-              input[++mem56] = A;
+              strs(input, ++mem56, A);
             if ((mem57 & 128) != 0)
               goto pos36554;
             Y++;
