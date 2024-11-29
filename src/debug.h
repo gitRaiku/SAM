@@ -4,9 +4,9 @@
 
 void PrintPhonemes(struct str *phonemeindex, struct str *phonemeLength,
                    struct str *stress);
-void PrintOutput(unsigned char *flag, unsigned char *f1, unsigned char *f2,
-                 unsigned char *f3, unsigned char *a1, unsigned char *a2,
-                 unsigned char *a3, unsigned char *p);
+void PrintOutput(struct str *flag, struct str *f1, struct str *f2,
+                 struct str *f3,   struct str *a1, struct str *a2,
+                 struct str *a3,   struct str *p);
 
 void PrintRule(unsigned short offset);
 

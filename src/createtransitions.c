@@ -43,9 +43,10 @@ extern struct str *__restrict phonemeIndexOutput;  // tab47296
 extern struct str *__restrict phonemeLengthOutput; // tab47416
 
 // from RenderTabs.h
-extern struct str *__restrict blendRank;
-extern struct str *__restrict outBlendLength;
-extern struct str *__restrict inBlendLength;
+extern unsigned char blendRank[];
+extern unsigned char outBlendLength[];
+extern unsigned char inBlendLength[];
+
 extern struct str *__restrict pitches;
 
 extern struct str *__restrict frequency1;
@@ -175,23 +176,23 @@ unsigned char CreateTransitions() {
       break; // 255 == end_token
 
     // get the ranking of each phoneme
-    next_rank = G(blendRank,next_phoneme);
-    rank = G(blendRank,phoneme);
+    next_rank = blendRank[next_phoneme];
+    rank = blendRank[phoneme];
 
     // compare the rank - lower rank value is stronger
     if (rank == next_rank) {
       // same rank, so use out blend lengths from each phoneme
-      phase1 = G(outBlendLength,phoneme);
-      phase2 = G(outBlendLength,next_phoneme);
+      phase1 = outBlendLength[phoneme];
+      phase2 = outBlendLength[next_phoneme];
     } else if (rank < next_rank) {
       // next phoneme is stronger, so us its blend lengths
-      phase1 = G(inBlendLength,next_phoneme);
-      phase2 = G(outBlendLength,next_phoneme);
+      phase1 = inBlendLength[next_phoneme];
+      phase2 = outBlendLength[next_phoneme];
     } else {
       // current phoneme is stronger, so use its blend lengths
       // note the out/in are swapped
-      phase1 = G(outBlendLength,phoneme);
-      phase2 = G(inBlendLength,phoneme);
+      phase1 = outBlendLength[phoneme];
+      phase2 = inBlendLength[phoneme];
     }
 
     mem49 += G(phonemeLengthOutput,pos);

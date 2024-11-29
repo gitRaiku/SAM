@@ -19,17 +19,17 @@ extern struct str *__restrict phonemeIndexOutput;  // tab47296
 extern struct str *__restrict stressOutput;        // tab47365
 extern struct str *__restrict phonemeLengthOutput; // tab47416
 
-unsigned char pitches[256]; // tab43008
+CS(pitches); // tab43008
 
-unsigned char frequency1[256];
-unsigned char frequency2[256];
-unsigned char frequency3[256];
+CS(frequency1);
+CS(frequency2);
+CS(frequency3);
 
-unsigned char amplitude1[256];
-unsigned char amplitude2[256];
-unsigned char amplitude3[256];
+CS(amplitude1);
+CS(amplitude2);
+CS(amplitude3);
 
-unsigned char sampledConsonantFlag[256]; // tab44800
+CS(sampledConsonantFlag); // tab44800
 
 void AddInflection(unsigned char mem48, unsigned char X);
 
@@ -165,7 +165,7 @@ void RenderSample(unsigned char *mem66, unsigned char consonantFlag,
   unsigned char pitchl = consonantFlag & 248;
   if (pitchl == 0) {
     // voiced phoneme: Z*, ZH, V*, DH
-    pitchl = pitches[mem49] >> 4;
+    pitchl = G(pitches, mem49) >> 4;
     *mem66 = RenderVoicedSample(hi, *mem66, pitchl ^ 255);
   } else
     RenderUnvoicedSample(hi, pitchl ^ 255, tab48426[hibyte]);
@@ -208,15 +208,14 @@ static void CreateFrames() {
 
     // copy from the source to the frames list
     do {
-      frequency1[X] = freq1data[phoneme]; // F1 frequency
-      frequency2[X] = freq2data[phoneme]; // F2 frequency
-      frequency3[X] = freq3data[phoneme]; // F3 frequency
-      amplitude1[X] = ampl1data[phoneme]; // F1 amplitude
-      amplitude2[X] = ampl2data[phoneme]; // F2 amplitude
-      amplitude3[X] = ampl3data[phoneme]; // F3 amplitude
-      sampledConsonantFlag[X] =
-          sampledConsonantFlags[phoneme]; // phoneme data for sampled consonants
-      pitches[X] = pitch + phase1;        // pitch
+      strs(frequency1, X, freq1data[phoneme]); // F1 frequency
+      strs(frequency2, X, freq2data[phoneme]); // F2 frequency
+      strs(frequency3, X, freq3data[phoneme]); // F3 frequency
+      strs(amplitude1, X, ampl1data[phoneme]); // F1 amplitude
+      strs(amplitude2, X, ampl2data[phoneme]); // F2 amplitude
+      strs(amplitude3, X, ampl3data[phoneme]); // F3 amplitude
+      strs(sampledConsonantFlag, X, sampledConsonantFlags[phoneme]); // phoneme data for sampled consonants
+      strs(pitches, X, pitch + phase1);        // pitch
       ++X;
     } while (--phase2 != 0);
 
@@ -231,9 +230,9 @@ static void CreateFrames() {
 void RescaleAmplitude() {
   int i;
   for (i = 255; i >= 0; i--) {
-    amplitude1[i] = amplitudeRescale[amplitude1[i]];
-    amplitude2[i] = amplitudeRescale[amplitude2[i]];
-    amplitude3[i] = amplitudeRescale[amplitude3[i]];
+    strs(amplitude1, i, amplitudeRescale[G(amplitude1, i)]);
+    strs(amplitude2, i, amplitudeRescale[G(amplitude2, i)]);
+    strs(amplitude3, i, amplitudeRescale[G(amplitude3, i)]);
   }
 }
 
@@ -245,10 +244,11 @@ void RescaleAmplitude() {
 
 void AssignPitchContour() {
   int i;
+  strs(pitches, 900, 0);
   for (i = 0; i < 256; i++) {
     // subtract half the frequency of the formant 1.
     // this adds variety to the voice
-    pitches[i] -= (frequency1[i] >> 1);
+    pitches->s[i] -= (G(frequency1, i) >> 1);
   }
 }
 
@@ -302,7 +302,7 @@ void AddInflection(unsigned char inflection, unsigned char pos) {
 
   // FIXME: Explain this fix better, it's not obvious
   // ML : A =, fixes a problem with invalid pitch with '.'
-  while ((A = pitches[pos]) == 127)
+  while ((A = G(pitches, pos)) == 127)
     ++pos;
 
   while (pos != end) {
@@ -310,9 +310,9 @@ void AddInflection(unsigned char inflection, unsigned char pos) {
     A += inflection;
 
     // set the inflection
-    pitches[pos] = A;
+    strs(pitches, pos, A);
 
-    while ((++pos != end) && pitches[pos] == 255)
+    while ((++pos != end) && G(pitches, pos) == 255)
       ;
   }
 }

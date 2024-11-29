@@ -24,6 +24,8 @@ run: sam
 	./sam -debug $(ARG)
 debug: sam
 	gdb -q --args sam -debug $(ARG)
+valgrind: sam
+	valgrind --leak-check=summary --log-file=valgrind.log ./sam $(ARG)
 
 clean:
 	rm *.o
