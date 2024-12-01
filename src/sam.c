@@ -67,18 +67,24 @@ int SAMMain() {
   Init();
 
   if (!Parser1()) { return 0; }
-  if (debug) { PrintPhonemes(phonemeindex, phonemeLength, stress); }
+	if (debug) PrintPhonemes(phonemeindex, phonemeLength, stress);
   Parser2();
+  fprintf(stdout, "Parser2\n"); PrintPhonemes(phonemeindex, phonemeLength, stress);
   CopyStress();
+  fprintf(stdout, "Stress\n"); PrintPhonemes(phonemeindex, phonemeLength, stress);
   SetPhonemeLength();
+  fprintf(stdout, "PhonemeLengt\n"); PrintPhonemes(phonemeindex, phonemeLength, stress);
   AdjustLengths();
+  fprintf(stdout, "ADjLength\n"); PrintPhonemes(phonemeindex, phonemeLength, stress);
   Code41240();
+  fprintf(stdout, "Code41240\n"); PrintPhonemes(phonemeindex, phonemeLength, stress);
   do {
     if (G(phonemeindex,X) > 80) {
       strs(phonemeindex, X, END);
       break; // error: delete all behind it
     }
   } while (++X < phonemeindex->c);
+  fprintf(stdout, "Idk\n"); PrintPhonemes(phonemeindex, phonemeLength, stress);
   InsertBreath();
 
   if (debug) { PrintPhonemes(phonemeindex, phonemeLength, stress); }
@@ -122,11 +128,11 @@ void PrepareOutput() {
 }
 
 void InsertBreath() {
-  uint32_t mem54 = 0;
-  uint32_t len = 0;
-  uint32_t index; // variable Y
+  unsigned char mem54 = 255;
+  unsigned char len = 0;
+  unsigned char index; // variable Y
 
-  uint32_t pos = 0;
+  unsigned char pos = 0;
 
   while ((index = G(phonemeindex,pos)) != END) {
     len += G(phonemeLength,pos);
@@ -135,7 +141,7 @@ void InsertBreath() {
       else if (!(flags[index] & FLAG_PUNCT)) { if (index == 0) { mem54 = pos; } } 
       else {
         len = 0;
-        Insert(pos++, BREAK, 0, 0);
+        Insert(++pos, BREAK, 0, 0);
       }
     } else {
       pos = mem54;
@@ -144,7 +150,7 @@ void InsertBreath() {
       strs(stress, pos, 0);
 
       len = 0;
-      Insert(pos++, BREAK, 0, 0);
+      Insert(++pos, BREAK, 0, 0);
     }
     ++pos;
   }

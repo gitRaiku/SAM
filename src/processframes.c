@@ -60,7 +60,7 @@ void ProcessFrames(unsigned char mem48) {
   uint32_t cnt = 0;
   while (mem48) {
     unsigned char flags = G(sampledConsonantFlag, Y);
-    fprintf(stdout, "FLAGS: %2x %u\n", flags, cnt++);
+    //fprintf(stdout, "FLAGS: %2x %u\n", flags, cnt++);
 
     // unvoiced sampled phoneme?
     if (flags & 248) {

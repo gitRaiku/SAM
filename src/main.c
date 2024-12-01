@@ -122,7 +122,6 @@ void MixAudio(void *unused, Uint8 *stream, int len) {
 
 void OutputSound() {
   int bufferpos = GetBufferLength();
-  struct str *buffer = GetBuffer();
   bufferpos /= 50;
   SDL_AudioSpec fmt;
 
@@ -139,7 +138,6 @@ void OutputSound() {
     exit(1);
   }
   SDL_PauseAudio(0);
-  // SDL_Delay((bufferpos)/7);
 
   while (pos < bufferpos) {
     SDL_Delay(100);
@@ -231,6 +229,7 @@ int main(int argc, char **argv) {
   //if (!SAMMain()) { PrintUsage(); return 1; }
   if (!SAMMain()) { fprintf(stdout, "SAMMain crashed!\n"); return 1; }
 
+  exit(0);
   if (wavfilename != NULL) { WriteWav(wavfilename, GetBuffer()->s, GetBufferLength() / 50); }
   else { OutputSound(); }
 

@@ -21,7 +21,7 @@ sam: $(OBJS)
 package: 
 	tar -cvzf sam.tar.gz README.md Makefile sing src/
 
-ARG=one two three four
+ARG=I love pears one 129 thyme kees
 run: sam
 	./sam -debug $(ARG)
 debug: sam
