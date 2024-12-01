@@ -4,21 +4,21 @@
 #include <stdio.h>
 #include <string.h>
 
-unsigned char A, X;
+uint32_t A, X;
 extern int debug;
 
-static unsigned char inputtemp[256]; // secure copy of input tab36096
+CS(inputtemp); // secure copy of input tab36096
 
 /* Retrieve flags for character at mem59-1 */
-unsigned char Code37055(unsigned char npos, unsigned char mask) {
+uint32_t Code37055(uint32_t npos, uint32_t mask) {
   X = npos;
-  return tab36376[inputtemp[X]] & mask;
+  return tab36376[inputtemp->s[X]] & mask;
 }
 
-unsigned int match(const char *str) {
+uint32_t match(const char *str) {
   while (*str) {
-    unsigned char ch = *str;
-    A = inputtemp[X++];
+    uint32_t ch = *str;
+    A = inputtemp->s[X++];
     if (A != ch)
       return 0;
     ++str;
@@ -26,8 +26,8 @@ unsigned int match(const char *str) {
   return 1;
 }
 
-unsigned char GetRuleByte(unsigned short mem62, unsigned char Y) {
-  unsigned int address = mem62;
+uint32_t GetRuleByte(uint16_t mem62, uint32_t Y) {
+  uint32_t address = mem62;
   if (mem62 >= 37541) {
     address -= 37541;
     return rules2[address + Y];
@@ -36,10 +36,10 @@ unsigned char GetRuleByte(unsigned short mem62, unsigned char Y) {
   return rules[address + Y];
 }
 
-int handle_ch2(unsigned char ch, unsigned char mem) {
-  unsigned char tmp;
+uint32_t handle_ch2(uint32_t ch, uint32_t mem) {
+  uint32_t tmp;
   X = mem;
-  tmp = tab36376[inputtemp[mem]];
+  tmp = tab36376[inputtemp->s[mem]];
   if (ch == ' ') {
     if (tmp & 128)
       return 1;
@@ -57,10 +57,10 @@ int handle_ch2(unsigned char ch, unsigned char mem) {
   return 0;
 }
 
-int handle_ch(unsigned char ch, unsigned char mem) {
-  unsigned char tmp;
+int32_t handle_ch(uint32_t ch, uint32_t mem) {
+  uint32_t tmp;
   X = mem;
-  tmp = tab36376[inputtemp[X]];
+  tmp = tab36376[inputtemp->s[X]];
   if (ch == ' ') {
     if ((tmp & 128) != 0)
       return 1;
@@ -72,7 +72,7 @@ int handle_ch(unsigned char ch, unsigned char mem) {
       return 1;
   } else if (ch == '&') {
     if ((tmp & 16) == 0) {
-      if (inputtemp[X] != 72)
+      if (inputtemp->s[X] != 72)
         return 1;
       ++X;
     }
@@ -81,7 +81,7 @@ int handle_ch(unsigned char ch, unsigned char mem) {
       return 1;
   } else if (ch == '+') {
     X = mem;
-    ch = inputtemp[X];
+    ch = inputtemp->s[X];
     if ((ch != 69) && (ch != 73) && (ch != 89))
       return 1;
   } else
@@ -90,23 +90,23 @@ int handle_ch(unsigned char ch, unsigned char mem) {
 }
 
 int TextToPhonemes(struct str *__restrict input) {
-  unsigned char mem56; // output position for phonemes
-  unsigned char mem57;
-  unsigned char mem58;
-  unsigned char mem59;
-  unsigned char mem60;
-  unsigned char mem61;
-  unsigned short mem62; // memory position of current rule
+  uint32_t mem56; // output position for phonemes
+  uint32_t mem57;
+  uint32_t mem58;
+  uint32_t mem59;
+  uint32_t mem60;
+  uint32_t mem61;
+  uint16_t mem62; // memory position of current rule
 
-  unsigned char mem64; // position of '=' or current character
-  unsigned char mem65; // position of ')'
-  unsigned char mem66; // position of '('
+  uint32_t mem64; // position of '=' or current character
+  uint32_t mem65; // position of ')'
+  uint32_t mem66; // position of '('
 
-  unsigned char Y;
+  uint32_t Y;
 
   int r;
 
-  inputtemp[0] = ' ';
+  strs(inputtemp, 0, ' ');
 
   // secure copy of input
   // because input will be overwritten by phonemes
@@ -117,16 +117,16 @@ int TextToPhonemes(struct str *__restrict input) {
       A = A & 95;
     else if (A >= 96)
       A = A & 79;
-    inputtemp[++X] = A;
-  } while (X < 255);
-  inputtemp[255] = 27;
-  mem56 = mem61 = 255;
+    strs(inputtemp, ++X, A);
+  } while (X <= input->hs);
+  strs(inputtemp, input->hs + 2, 27);
+  mem56 = mem61 = -1;
 
 pos36554:
   while (1) {
     while (1) {
       X = ++mem61;
-      mem64 = inputtemp[X];
+      mem64 = inputtemp->s[X];
       if (mem64 == '[') {
         X = ++mem56;
         strs(input, X, 155);
@@ -136,7 +136,7 @@ pos36554:
       if (mem64 != '.')
         break;
       X++;
-      A = tab36376[inputtemp[X]] & 1;
+      A = tab36376[inputtemp->s[X]] & 1;
       if (A != 0)
         break;
       mem56++;
@@ -152,12 +152,13 @@ pos36554:
 
     if (mem57 != 0)
       break;
-    inputtemp[X] = ' ';
+    inputtemp->s[X] = ' ';
     X = ++mem56;
+    /*
     if (X > 120) {
       strs(input, X, 155);
       return 1;
-    }
+    }*/
     strs(input, X, 32);
   }
 
@@ -188,7 +189,7 @@ pos36700:
   Y = mem66 + 1;
 
   while (1) {
-    if (GetRuleByte(mem62, Y) != inputtemp[X])
+    if (GetRuleByte(mem62, Y) != inputtemp->s[X])
       goto pos36700;
     if (++Y == mem65)
       break;
@@ -200,7 +201,7 @@ pos36700:
   mem59 = mem61;
 
   while (1) {
-    unsigned char ch;
+    uint32_t ch;
     while (1) {
       mem66--;
       mem57 = GetRuleByte(mem62, mem66);
@@ -211,7 +212,7 @@ pos36700:
       X = mem57 & 127;
       if ((tab36376[X] & 128) == 0)
         break;
-      if (inputtemp[mem59 - 1] != mem57)
+      if (inputtemp->s[mem59 - 1] != mem57)
         goto pos36700;
       --mem59;
     }
@@ -223,10 +224,10 @@ pos36700:
       switch (ch) {
       case '&':
         if (!Code37055(mem59 - 1, 16)) {
-          if (inputtemp[X] != 'H')
+          if (inputtemp->s[X] != 'H')
             r = 1;
           else {
-            A = inputtemp[--X];
+            A = inputtemp->s[--X];
             if ((A != 'C') && (A != 'S'))
               r = 1;
           }
@@ -235,7 +236,7 @@ pos36700:
 
       case '@':
         if (!Code37055(mem59 - 1, 4)) {
-          A = inputtemp[X];
+          A = inputtemp->s[X];
           if (A != 72)
             r = 1;
           if ((A != 84) && (A != 67) && (A != 83))
@@ -244,7 +245,7 @@ pos36700:
         break;
       case '+':
         X = mem59;
-        A = inputtemp[--X];
+        A = inputtemp->s[--X];
         if ((A != 'E') && (A != 'I') && (A != 'Y'))
           r = 1;
         break;
@@ -265,11 +266,11 @@ pos36700:
 
   do {
     X = mem58 + 1;
-    if (inputtemp[X] == 'E') {
-      if ((tab36376[inputtemp[X + 1]] & 128) != 0) {
-        A = inputtemp[++X];
+    if (inputtemp->s[X] == 'E') {
+      if ((tab36376[inputtemp->s[X + 1]] & 128) != 0) {
+        A = inputtemp->s[++X];
         if (A == 'L') {
-          if (inputtemp[++X] != 'Y')
+          if (inputtemp->s[++X] != 'Y')
             goto pos36700;
         } else if ((A != 'R') && (A != 'S') && (A != 'D') && !match("FUL"))
           goto pos36700;
@@ -305,7 +306,7 @@ pos36700:
         mem57 = GetRuleByte(mem62, Y);
         if ((tab36376[mem57] & 128) == 0)
           break;
-        if (inputtemp[mem58 + 1] != mem57) {
+        if (inputtemp->s[mem58 + 1] != mem57) {
           r = 1;
           break;
         }
@@ -316,7 +317,7 @@ pos36700:
         A = mem57;
         if (A == '@') {
           if (Code37055(mem58 + 1, 4) == 0) {
-            A = inputtemp[X];
+            A = inputtemp->s[X];
             if ((A != 82) && (A != 84) && (A != 67) && (A != 83))
               r = 1;
           } else {

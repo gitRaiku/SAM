@@ -145,8 +145,8 @@ static void RenderUnvoicedSample(unsigned short hi, unsigned char off,
 //
 // For voices samples, samples are interleaved between voiced output.
 
-void RenderSample(unsigned char *mem66, unsigned char consonantFlag,
-                  unsigned char mem49) {
+void RenderSample(uint32_t *mem66, uint32_t consonantFlag,
+                  uint32_t mem49) {
   // mem49 == current phoneme's index
 
   // mask low three bits and subtract 1 get value to
@@ -182,13 +182,13 @@ void RenderSample(unsigned char *mem66, unsigned char consonantFlag,
 // The parameters are copied from the phoneme to the frame verbatim.
 //
 static void CreateFrames() {
-  unsigned char X = 0;
-  unsigned int i = 0;
-  while (i < 256) {
+  uint32_t X = 0;
+  uint32_t i = 0;
+  while (i <= phonemeIndexOutput->hs) {
     // get the phoneme at the index
-    unsigned char phoneme = G(phonemeIndexOutput, i);
-    unsigned char phase1;
-    unsigned phase2 = 0;
+    uint32_t phoneme = G(phonemeIndexOutput, i);
+    uint32_t phase1;
+    uint32_t phase2 = 0;
 
     // if terminal phoneme, exit the loop
     if (phoneme == 255) {
@@ -206,7 +206,7 @@ static void CreateFrames() {
 
     // get number of frames to write
     phase2 = G(phonemeLengthOutput, i);
-    fprintf(stdout, "Phoneme: %u %u %u\n", phoneme, phase1, phase2);
+    if (debug) { fprintf(stdout, "Phoneme: %u %u %u\n", phoneme, phase1, phase2); }
 
     // copy from the source to the frames list
     do {
@@ -324,7 +324,7 @@ void AddInflection(unsigned char inflection, unsigned char pos) {
     mouth formant (F1) and the throat formant (F2). Only the voiced
     phonemes (5-29 and 48-53) are altered.
 */
-void SetMouthThroat(unsigned char mouth, unsigned char throat) {
+void SetMouthThroat(uint32_t mouth, uint32_t throat) {
   // mouth formants (F1) 5..29
   static const unsigned char mouthFormants5_29[30] = {
       0,  0,  0,  0,  0,  10, 14, 19, 24, 27, 23, 21, 16, 20, 14,

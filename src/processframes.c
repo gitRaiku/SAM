@@ -45,22 +45,20 @@ static void CombineGlottalAndFormants(unsigned char phase1,
 // To simulate them being driven by the glottal pulse, the waveforms are
 // reset at the beginning of each glottal pulse.
 //
-void ProcessFrames(unsigned char mem48) {
+void ProcessFrames(uint32_t mem48) {
   unsigned char speedcounter = 72;
   unsigned char phase1 = 0;
   unsigned char phase2 = 0;
   unsigned char phase3 = 0;
-  unsigned char mem66 = 0; //!! was not initialized
+  uint32_t mem66 = 0; //!! was not initialized
 
   unsigned char Y = 0;
 
   unsigned char glottal_pulse = G(pitches, 0);
   unsigned char mem38 = glottal_pulse - (glottal_pulse >> 2); // mem44 * 0.75
 
-  uint32_t cnt = 0;
   while (mem48) {
     unsigned char flags = G(sampledConsonantFlag, Y);
-    //fprintf(stdout, "FLAGS: %2x %u\n", flags, cnt++);
 
     // unvoiced sampled phoneme?
     if (flags & 248) {

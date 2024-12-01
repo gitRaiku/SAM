@@ -66,7 +66,7 @@ extern struct str *__restrict amplitude3;
 //  172=amplitude1
 //  173=amplitude2
 //  174=amplitude3
-unsigned char Read(unsigned char p, unsigned char Y) {
+uint32_t Read(uint32_t p, uint32_t Y) {
   switch (p) {
   case 168:
     return G(pitches,Y);
@@ -88,7 +88,7 @@ unsigned char Read(unsigned char p, unsigned char Y) {
   }
 }
 
-void Write(unsigned char p, unsigned char Y, unsigned char value) {
+void Write(uint32_t p, uint32_t Y, uint32_t value) {
   fprintf(stdout, "Write %u %u %u\n", p, Y, value);
   switch (p) {
   case 168:
@@ -119,16 +119,20 @@ void Write(unsigned char p, unsigned char Y, unsigned char value) {
 }
 
 // linearly interpolate values
-void interpolate(unsigned char width, unsigned char table, unsigned char frame,
-                 char mem53) {
+void interpolate(uint8_t width, uint32_t table, uint32_t frame,
+                 int8_t mem53) { /// TODO: These have to stay uint8_t and int8_t otherwise
+                                 /// (gdb) p (int8_t)(((int8_t)-12)/((uint32_t)8))
+                                 /// $11 = -2 '\376'
+                                 /// (gdb) p (int8_t)(((int8_t)-12)/((uint8_t)8))
+                                 /// $12 = -1 '\377'
   fprintf(stdout, "Interpolate: %x %x %x %x\n", width, table, frame, mem53);
-  uint32_t sign = (mem53 < 0);
-  uint32_t remainder = abs(mem53) % width;
-  uint32_t div = mem53 / width;
+  uint8_t sign = (mem53 < 0);
+  uint8_t remainder = abs(mem53) % width;
+  uint8_t div = mem53 / width;
 
-  uint32_t error = 0;
-  uint32_t pos = width;
-  uint32_t val = Read(table, frame) + div;
+  uint8_t error = 0;
+  uint8_t pos = width;
+  uint8_t val = Read(table, frame) + div;
 
   while (--pos) {
     error += remainder;
@@ -144,35 +148,35 @@ void interpolate(unsigned char width, unsigned char table, unsigned char frame,
   }
 }
 
-void interpolate_pitch(unsigned char pos, unsigned char mem49,
-                       unsigned char phase3) {
+void interpolate_pitch(uint32_t pos, uint32_t mem49,
+                       uint32_t phase3) {
   // unlike the other values, the pitches[] interpolates from
   // the middle of the current phoneme to the middle of the
   // next phoneme
 
   // half the width of the current and next phoneme
-  unsigned char cur_width = G(phonemeLengthOutput,pos) / 2;
-  unsigned char next_width = G(phonemeLengthOutput,pos + 1) / 2;
+  uint32_t cur_width = G(phonemeLengthOutput,pos) / 2;
+  uint32_t next_width = G(phonemeLengthOutput,pos + 1) / 2;
   // sum the values
-  unsigned char width = cur_width + next_width;
-  char pitch = G(pitches,next_width + mem49) - G(pitches,mem49 - cur_width);
+  uint32_t width = cur_width + next_width;
+  int32_t pitch = G(pitches,next_width + mem49) - G(pitches,mem49 - cur_width);
   interpolate(width, 168, phase3, pitch);
 }
 
-unsigned char CreateTransitions() {
-  unsigned char mem49 = 0;
-  unsigned char pos = 0;
+uint32_t CreateTransitions() {
+  uint32_t mem49 = 0;
+  uint32_t pos = 0;
   while (1) {
-    unsigned char next_rank;
-    unsigned char rank;
-    unsigned char speedcounter;
-    unsigned char phase1;
-    unsigned char phase2;
-    unsigned char phase3;
-    unsigned char transition;
+    uint32_t next_rank;
+    uint32_t rank;
+    uint32_t speedcounter;
+    uint32_t phase1;
+    uint32_t phase2;
+    uint32_t phase3;
+    uint32_t transition;
 
-    unsigned char phoneme = G(phonemeIndexOutput,pos);
-    unsigned char next_phoneme = G(phonemeIndexOutput,pos + 1);
+    uint32_t phoneme = G(phonemeIndexOutput,pos);
+    uint32_t next_phoneme = G(phonemeIndexOutput,pos + 1);
 
     if (next_phoneme == 255)
       break; // 255 == end_token
@@ -204,7 +208,7 @@ unsigned char CreateTransitions() {
     transition = phase1 + phase2; // total transition?
 
     if (((transition - 2) & 128) == 0) {
-      unsigned char table = 169;
+      uint32_t table = 169;
       interpolate_pitch(pos, mem49, phase3);
       while (table < 175) {
         // tables:
@@ -216,7 +220,7 @@ unsigned char CreateTransitions() {
         // 173  amplitude2
         // 174  amplitude3
 
-        char value = Read(table, speedcounter) - Read(table, phase3);
+        int32_t value = Read(table, speedcounter) - Read(table, phase3);
         interpolate(transition, table, phase3, value);
         table++;
       }

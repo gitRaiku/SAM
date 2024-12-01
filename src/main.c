@@ -229,7 +229,7 @@ int main(int argc, char **argv) {
   //if (!SAMMain()) { PrintUsage(); return 1; }
   if (!SAMMain()) { fprintf(stdout, "SAMMain crashed!\n"); return 1; }
 
-  exit(0);
+  //exit(0);
   if (wavfilename != NULL) { WriteWav(wavfilename, GetBuffer()->s, GetBufferLength() / 50); }
   else { OutputSound(); }
 

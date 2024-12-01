@@ -4,12 +4,12 @@
 #include "str.h"
 
 void Render();
-void SetMouthThroat(unsigned char mouth, unsigned char throat);
+void SetMouthThroat(uint32_t mouth, uint32_t throat);
 
-void ProcessFrames(unsigned char mem48);
-void RenderSample(unsigned char *mem66, unsigned char consonantFlag,
-                  unsigned char mem49);
-unsigned char CreateTransitions();
+void ProcessFrames(uint32_t mem48);
+void RenderSample(uint32_t *mem66, uint32_t consonantFlag,
+                  uint32_t mem49);
+uint32_t CreateTransitions();
 
 #define PHONEME_PERIOD (1)
 #define PHONEME_QUESTION (2)

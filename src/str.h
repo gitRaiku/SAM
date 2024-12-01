@@ -22,6 +22,7 @@ static uint8_t G(struct str *__restrict s, uint32_t p) {
 }
 
 static void strs(struct str *__restrict s, uint32_t p, char c) {
+  if (p > UINT32_MAX - 60) { fprintf(stderr, "KMSKMSKMSKMSKMSMKS NEGATIVE P %u!!!!!!!!!!!!!!1\n", p); exit(230); }
   if (s->m == 0) {
     s->m = 4;
     s->s = calloc(s->m, 1);
