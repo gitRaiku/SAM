@@ -1,5 +1,7 @@
 OBJS = reciter.o sam.o render.o main.o debug.o processframes.o createtransitions.o
 
+.PHONY: debug
+
 CC = gcc
 
 # libsdl present
@@ -25,7 +27,8 @@ run: sam
 debug: sam
 	gdb -q --args sam -debug $(ARG)
 valgrind: sam
-	valgrind --leak-check=summary --log-file=valgrind.log ./sam $(ARG)
+	# valgrind --leak-check=summary --log-file=valgrind.log ./sam $(ARG)
+	valgrind --leak-check=summary ./sam $(ARG) 2>&1 | tee valg.log
 
 clean:
 	rm *.o

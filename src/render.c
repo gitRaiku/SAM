@@ -167,8 +167,10 @@ void RenderSample(unsigned char *mem66, unsigned char consonantFlag,
     // voiced phoneme: Z*, ZH, V*, DH
     pitchl = G(pitches, mem49) >> 4;
     *mem66 = RenderVoicedSample(hi, *mem66, pitchl ^ 255);
-  } else
+  } else {
+    fprintf(stdout, "RenderUnvoiced: %u %u -> %u\n", hi, pitchl ^ 255, hi + (pitchl ^ 255));
     RenderUnvoicedSample(hi, pitchl ^ 255, tab48426[hibyte]);
+  }
 }
 
 // CREATE FRAMES

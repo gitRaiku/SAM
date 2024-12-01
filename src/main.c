@@ -158,6 +158,7 @@ CS(input);
 
 int main(int argc, char **argv) {
   int i;
+  setbuf(stdout, NULL);
   int phonetic = 0;
 
   char *wavfilename = NULL;

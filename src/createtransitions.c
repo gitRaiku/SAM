@@ -89,6 +89,7 @@ unsigned char Read(unsigned char p, unsigned char Y) {
 }
 
 void Write(unsigned char p, unsigned char Y, unsigned char value) {
+  fprintf(stdout, "Write %u %u %u\n", p, Y, value);
   switch (p) {
   case 168:
     strs(pitches, Y, value);
@@ -118,8 +119,9 @@ void Write(unsigned char p, unsigned char Y, unsigned char value) {
 }
 
 // linearly interpolate values
-void interpolate(uint32_t width, uint32_t table, uint32_t frame,
-                 uint32_t mem53) {
+void interpolate(unsigned char width, unsigned char table, unsigned char frame,
+                 char mem53) {
+  fprintf(stdout, "Interpolate: %x %x %x %x\n", width, table, frame, mem53);
   uint32_t sign = (mem53 < 0);
   uint32_t remainder = abs(mem53) % width;
   uint32_t div = mem53 / width;

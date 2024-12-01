@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define CS(name)                                                               \
   struct str _ ##name;                                                          \
@@ -10,7 +11,7 @@
 
 struct str {
   uint8_t *__restrict s;
-  uint32_t c, m;
+  int32_t c, m, hs;
 };
 
 uint32_t __inline__ __attribute((pure)) max(uint32_t o1, uint32_t o2) { return o1 > o2 ? o1 : o2; }
@@ -25,11 +26,12 @@ static void strs(struct str *__restrict s, uint32_t p, char c) {
     s->m = 4;
     s->s = calloc(s->m, 1);
   }
-  while (p >= s->m) {
+  while (p >= (s->m - 1)) {
     s->m *= 2;
     s->s = realloc(s->s, s->m);
     memset(s->s + s->m / 2, 0, s->m / 2);
   }
+  IMAX(s->hs, p);
   s->s[p] = c;
 }
 

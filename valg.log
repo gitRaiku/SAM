@@ -1,0 +1,578 @@
+==52905== Memcheck, a memory error detector
+==52905== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==52905== Using Valgrind-3.23.0 and LibVEX; rerun with -h for copyright info
+==52905== Command: ./sam one two three four
+==52905== 
+Sign12: 32 87
+Matched first char!
+Sign12: 87 65
+Matched first char!
+Sign12: 65 72
+Matched both chars!
+Sign12: 78 32
+Matched first char!
+Sign12: 32 84
+Matched first char!
+Sign12: 84 85
+Matched first char!
+Sign12: 85 87
+Matched both chars!
+Sign12: 32 84
+Matched first char!
+Sign12: 84 72
+Matched both chars!
+Sign12: 82 73
+Matched first char!
+Sign12: 73 89
+Matched both chars!
+Sign12: 52 32
+Is stress char!
+Sign12: 32 70
+Matched first char!
+Sign12: 70 79
+Matched first char!
+Sign12: 79 72
+Matched both chars!
+Sign12: 82 32
+Matched first char!
+Sign12: 32 155
+Matched first char!
+Printed END at 16
+Phoneme Pause
+pf 4164:prior 0
+pf 164:prior 25
+pf 3148:prior 10
+Phoneme Pause
+pf 1099:prior 0
+pf 148:prior 69
+Diftong 53 148 6
+pf 132:prior 16
+Phoneme Pause
+pf 9280:prior 0
+pf 4164:prior 35
+pf 164:prior 23
+Phoneme Pause
+pf 8256:prior 0
+pf 132:prior 34
+pf 4164:prior 17
+Change 15 -> 18
+Phoneme Pause
+STARTSTRESS
+Flags[0] = 32768; 0
+Flags[25] = 4164; 1
+Got Y 10 at 2
+  Got stress Y 0 at 2
+Flags[10] = 164; 2
+Flags[28] = 3148; 3
+Got Y 0 at 4
+Flags[0] = 32768; 4
+Flags[69] = 1099; 5
+Got Y 16 at 6
+  Got stress Y 0 at 6
+Flags[16] = 132; 6
+Flags[20] = 132; 7
+Flags[0] = 32768; 8
+Flags[35] = 9280; 9
+Got Y 23 at 10
+Flags[23] = 4164; 10
+Got Y 5 at 11
+  Got stress Y 4 at 11
+    Set stress[10] = 5
+Flags[5] = 164; 11
+Flags[0] = 32768; 12
+Flags[34] = 8256; 13
+Got Y 17 at 14
+  Got stress Y 0 at 14
+Flags[17] = 132; 14
+Flags[18] = 132; 15
+Flags[0] = 32768; 16
+ENDSTRESS
+Got phonemeindex at 0[0] : setting at 0
+Simple BREAK
+Got phonemeindex at 1[25] : setting at 0
+Default: plo[0]->6; stres[0]->0
+Got phonemeindex at 2[10] : setting at 1
+Default: plo[1]->8; stres[1]->0
+Got phonemeindex at 3[28] : setting at 2
+Default: plo[2]->7; stres[2]->0
+Got phonemeindex at 4[0] : setting at 3
+Simple BREAK
+Got phonemeindex at 5[69] : setting at 3
+Default: plo[3]->4; stres[3]->0
+Got phonemeindex at 6[70] : setting at 4
+Default: plo[4]->2; stres[4]->0
+Got phonemeindex at 7[71] : setting at 5
+Default: plo[5]->2; stres[5]->0
+Got phonemeindex at 8[16] : setting at 6
+Default: plo[6]->10; stres[6]->0
+Got phonemeindex at 9[20] : setting at 7
+Default: plo[7]->8; stres[7]->0
+Got phonemeindex at 10[0] : setting at 8
+Simple BREAK
+Got phonemeindex at 11[35] : setting at 8
+Default: plo[8]->2; stres[8]->0
+Got phonemeindex at 12[23] : setting at 9
+Default: plo[9]->8; stres[9]->5
+Got phonemeindex at 13[5] : setting at 10
+Default: plo[10]->11; stres[10]->4
+Got phonemeindex at 14[0] : setting at 11
+Simple BREAK
+Got phonemeindex at 15[34] : setting at 11
+Default: plo[11]->2; stres[11]->0
+Got phonemeindex at 16[17] : setting at 12
+Default: plo[12]->10; stres[12]->0
+Got phonemeindex at 17[18] : setting at 13
+Default: plo[13]->10; stres[13]->0
+Got phonemeindex at 18[0] : setting at 14
+Simple BREAK
+Got phonemeindex at 19[255] : setting at 14
+Hit END
+Phoneme: 25 0 6
+Phoneme: 10 0 8
+Phoneme: 28 0 7
+Phoneme: 69 0 4
+Phoneme: 70 0 2
+Phoneme: 71 0 2
+Phoneme: 16 0 10
+Phoneme: 20 0 8
+Phoneme: 35 0 2
+Phoneme: 23 249 8
+Phoneme: 5 243 11
+Phoneme: 34 0 2
+Phoneme: 17 0 10
+Phoneme: 18 0 10
+Broke out at 14
+Interpolate: 7 a8 4 0
+Write 168 5 64
+Write 168 6 64
+Write 168 7 64
+Write 168 8 64
+Write 168 9 64
+Write 168 10 64
+Interpolate: 5 a9 4 c
+Write 169 5 12
+Write 169 6 14
+Write 169 7 17
+Write 169 8 19
+Interpolate: 5 aa 4 14
+Write 170 5 28
+Write 170 6 32
+Write 170 7 36
+Write 170 8 40
+Interpolate: 5 ab 4 fffffffd
+Write 171 5 90
+Write 171 6 89
+Write 171 7 89
+Write 171 8 88
+Interpolate: 5 ac 4 2
+Write 172 5 13
+Write 172 6 13
+Write 172 7 14
+Write 172 8 14
+Interpolate: 5 ad 4 4
+Write 173 5 8
+Write 173 6 9
+Write 173 7 10
+Write 173 8 11
+Interpolate: 5 ae 4 1
+Write 174 5 0
+Write 174 6 0
+Write 174 7 0
+Write 174 8 0
+Interpolate: 7 a8 c 0
+Write 168 13 64
+Write 168 14 64
+Write 168 15 64
+Write 168 16 64
+Write 168 17 64
+Write 168 18 64
+Interpolate: 3 a9 c fffffff0
+Write 169 13 17
+Write 169 14 12
+Interpolate: 3 aa c a
+Write 170 13 47
+Write 170 14 50
+Interpolate: 3 ab c 22
+Write 171 13 98
+Write 171 14 109
+Interpolate: 3 ac c fffffffa
+Write 172 13 13
+Write 172 14 11
+Interpolate: 3 ad c fffffffd
+Write 173 13 11
+Write 173 14 10
+Interpolate: 3 ae c ffffffff
+Write 174 13 1
+Write 174 14 1
+Interpolate: 5 a8 13 0
+Write 168 20 64
+Write 168 21 64
+Write 168 22 64
+Write 168 23 64
+Interpolate: 4 a9 13 0
+Write 169 20 6
+Write 169 21 6
+Write 169 22 6
+Interpolate: 4 aa 13 c
+Write 170 20 57
+Write 170 21 60
+Write 170 22 63
+Interpolate: 4 ab 13 0
+Write 171 20 121
+Write 171 21 121
+Write 171 22 121
+Interpolate: 4 ac 13 fffffff7
+Write 172 20 7
+Write 172 21 5
+Write 172 22 3
+Interpolate: 4 ad 13 fffffff7
+Write 173 20 7
+Write 173 21 5
+Write 173 22 3
+Interpolate: 4 ae 13 0
+Write 174 20 0
+Write 174 21 0
+Write 174 22 0
+Interpolate: 6 a8 1c 0
+Write 168 29 64
+Write 168 30 64
+Write 168 31 64
+Write 168 32 64
+Write 168 33 64
+Interpolate: 3 a9 1c 8
+Write 169 29 8
+Write 169 30 11
+Interpolate: 3 aa 1c ffffffe2
+Write 170 29 56
+Write 170 30 46
+Interpolate: 3 ab 1c ffffffd9
+Write 171 29 108
+Write 171 30 95
+Interpolate: 3 ac 1c f
+Write 172 29 5
+Write 172 30 10
+Interpolate: 3 ad 1c c
+Write 173 29 4
+Write 173 30 8
+Interpolate: 3 ae 1c 1
+Write 174 29 0
+Write 174 30 0
+Interpolate: 9 a8 23 0
+Write 168 36 64
+Write 168 37 64
+Write 168 38 64
+Write 168 39 64
+Write 168 40 64
+Write 168 41 64
+Write 168 42 64
+Write 168 43 64
+Interpolate: 8 a9 23 fffffffe
+Write 169 36 14
+Write 169 37 14
+Write 169 38 14
+Write 169 39 13
+Write 169 40 13
+Write 169 41 13
+Write 169 42 13
+Interpolate: 8 aa 23 fffffff8
+Write 170 36 35
+Write 170 37 34
+Write 170 38 33
+Write 170 39 32
+Write 170 40 31
+Write 170 41 30
+Write 170 42 29
+Interpolate: 8 ab 23 fffffffe
+Write 171 36 82
+Write 171 37 82
+Write 171 38 82
+Write 171 39 81
+Write 171 40 81
+Write 171 41 81
+Write 171 42 81
+Interpolate: 8 ac 23 fffffffe
+Write 172 36 15
+Write 172 37 15
+Write 172 38 15
+Write 172 39 14
+Write 172 40 14
+Write 172 41 14
+Write 172 42 14
+Interpolate: 8 ad 23 fffffffc
+Write 173 36 12
+Write 173 37 11
+Write 173 38 11
+Write 173 39 10
+Write 173 40 10
+Write 173 41 9
+Write 173 42 9
+Interpolate: 8 ae 23 ffffffff
+Write 174 36 1
+Write 174 37 1
+Write 174 38 1
+Write 174 39 1
+Write 174 40 1
+Write 174 41 1
+Write 174 42 1
+Interpolate: 5 a8 2c 0
+Write 168 45 64
+Write 168 46 64
+Write 168 47 64
+Write 168 48 64
+Interpolate: 4 a9 2c fffffffa
+Write 169 45 11
+Write 169 46 9
+Write 169 47 8
+Interpolate: 4 aa 2c 26
+Write 170 45 37
+Write 170 46 47
+Write 170 47 56
+Interpolate: 4 ab 2c 29
+Write 171 45 90
+Write 171 46 100
+Write 171 47 110
+Interpolate: 4 ac 2c fffffff3
+Write 172 45 10
+Write 172 46 7
+Write 172 47 4
+Interpolate: 4 ad 2c fffffff8
+Write 173 45 6
+Write 173 46 4
+Write 173 47 2
+Interpolate: 4 ae 2c 0
+Write 174 45 0
+Write 174 46 0
+Write 174 47 0
+Interpolate: 5 a8 30 fffffff9
+Write 168 49 63
+Write 168 50 62
+Write 168 51 60
+Write 168 52 59
+Interpolate: 4 a9 30 c
+Write 169 49 9
+Write 169 50 12
+Write 169 51 15
+Interpolate: 4 aa 30 fffffff0
+Write 170 49 62
+Write 170 50 58
+Write 170 51 54
+Interpolate: 4 ab 30 ffffffc3
+Write 171 49 106
+Write 171 50 91
+Write 171 51 76
+Interpolate: 4 ac 30 c
+Write 172 49 3
+Write 172 50 6
+Write 172 51 9
+Interpolate: 4 ad 30 a
+Write 173 49 2
+Write 173 50 5
+Write 173 51 7
+Interpolate: 4 ae 30 5
+Write 174 49 1
+Write 174 50 2
+Write 174 51 3
+Interpolate: 9 a8 37 fffffffa
+Write 168 56 57
+Write 168 57 56
+Write 168 58 55
+Write 168 59 55
+Write 168 60 54
+Write 168 61 53
+Write 168 62 53
+Write 168 63 52
+Interpolate: 5 a9 37 fffffff8
+Write 169 56 17
+Write 169 57 15
+Write 169 58 14
+Write 169 59 12
+Interpolate: 5 aa 37 22
+Write 170 56 56
+Write 170 57 63
+Write 170 58 70
+Write 170 59 77
+Interpolate: 5 ab 37 32
+Write 171 56 70
+Write 171 57 80
+Write 171 58 90
+Write 171 59 100
+Interpolate: 5 ac 37 1
+Write 172 56 12
+Write 172 57 12
+Write 172 58 12
+Write 172 59 12
+Interpolate: 5 ad 37 0
+Write 173 56 10
+Write 173 57 10
+Write 173 58 10
+Write 173 59 10
+Interpolate: 5 ae 37 3
+Write 174 56 5
+Write 174 57 6
+Write 174 58 6
+Write 174 59 7
+Interpolate: 6 a8 41 c
+Write 168 66 53
+Write 168 67 55
+Write 168 68 57
+Write 168 69 59
+Write 168 70 61
+Interpolate: 4 a9 41 fffffffc
+Write 169 66 9
+Write 169 67 8
+Write 169 68 7
+Interpolate: 4 aa 41 ffffffc6
+Write 170 66 70
+Write 170 67 55
+Write 170 68 41
+Interpolate: 4 ab 41 ffffffe3
+Write 171 66 103
+Write 171 67 96
+Write 171 68 89
+Interpolate: 4 ac 41 fffffff3
+Write 172 66 10
+Write 172 67 7
+Write 172 68 4
+Interpolate: 4 ad 41 fffffff6
+Write 173 66 8
+Write 173 67 5
+Write 173 68 3
+Interpolate: 4 ae 41 fffffff8
+Write 174 66 6
+Write 174 67 4
+Write 174 68 2
+Interpolate: 6 a8 45 5
+Write 168 70 59
+Write 168 71 60
+Write 168 72 61
+Write 168 73 62
+Write 168 74 63
+Interpolate: 4 a9 45 c
+Write 169 70 9
+Write 169 71 12
+Write 169 72 15
+Interpolate: 4 aa 45 4
+Write 170 70 27
+Write 170 71 28
+Write 170 72 29
+Interpolate: 4 ab 45 7
+Write 171 70 82
+Write 171 71 84
+Write 171 72 86
+Interpolate: 4 ac 45 f
+Write 172 70 3
+Write 172 71 7
+Write 172 72 11
+Interpolate: 4 ad 45 c
+Write 173 70 3
+Write 173 71 6
+Write 173 72 9
+Interpolate: 4 ae 45 0
+Write 174 70 0
+Write 174 71 0
+Write 174 72 0
+Interpolate: a a8 4c 0
+Write 168 77 64
+Write 168 78 64
+Write 168 79 64
+Write 168 80 64
+Write 168 81 64
+Write 168 82 64
+Write 168 83 64
+Write 168 84 64
+Write 168 85 64
+Interpolate: 8 a9 4c 0
+Write 169 77 18
+Write 169 78 18
+Write 169 79 18
+Write 169 80 18
+Write 169 81 18
+Write 169 82 18
+Write 169 83 18
+Interpolate: 8 aa 4c 14
+Write 170 77 32
+Write 170 78 35
+Write 170 79 37
+Write 170 80 40
+Write 170 81 42
+Write 170 82 45
+Write 170 83 47
+Interpolate: 8 ab 4c ffffffe6
+Write 171 77 85
+Write 171 78 82
+Write 171 79 79
+Write 171 80 75
+Write 171 81 72
+Write 171 82 69
+Write 171 83 66
+Interpolate: 8 ac 4c fffffffe
+Write 172 77 15
+Write 172 78 15
+Write 172 79 15
+Write 172 80 14
+Write 172 81 14
+Write 172 82 14
+Write 172 83 14
+Interpolate: 8 ad 4c 0
+Write 173 77 12
+Write 173 78 12
+Write 173 79 12
+Write 173 80 12
+Write 173 81 12
+Write 173 82 12
+Write 173 83 12
+Interpolate: 8 ae 4c 6
+Write 174 77 0
+Write 174 78 0
+Write 174 79 0
+Write 174 80 0
+Write 174 81 0
+Write 174 82 0
+Write 174 83 0
+FLAGS:  0
+FLAGS:  0
+FLAGS:  0
+FLAGS:  0
+FLAGS:  0
+FLAGS:  0
+FLAGS:  0
+==52905== Invalid write of size 1
+==52905==    at 0x10B5A9: Output (render.c:59)
+==52905==    by 0x10C9B8: CombineGlottalAndFormants (processframes.c:36)
+==52905==    by 0x10CA4B: ProcessFrames (processframes.c:72)
+==52905==    by 0x10BAAC: Render (render.c:288)
+==52905==    by 0x109E03: PrepareOutput (sam.c:101)
+==52905==    by 0x10B429: SAMMain (sam.c:86)
+==52905==    by 0x10C54E: main (main.c:230)
+==52905==  Address 0x1476ae is not stack'd, malloc'd or (recently) free'd
+==52905== 
+==52905== 
+==52905== Process terminating with default action of signal 11 (SIGSEGV): dumping core
+==52905==  Access not within mapped region at address 0x1476AE
+==52905==    at 0x10B5A9: Output (render.c:59)
+==52905==    by 0x10C9B8: CombineGlottalAndFormants (processframes.c:36)
+==52905==    by 0x10CA4B: ProcessFrames (processframes.c:72)
+==52905==    by 0x10BAAC: Render (render.c:288)
+==52905==    by 0x109E03: PrepareOutput (sam.c:101)
+==52905==    by 0x10B429: SAMMain (sam.c:86)
+==52905==    by 0x10C54E: main (main.c:230)
+==52905==  If you believe this happened as a result of a stack
+==52905==  overflow in your program's main thread (unlikely but
+==52905==  possible), you can try to increase the size of the
+==52905==  main thread stack using the --main-stacksize= flag.
+==52905==  The main thread stack size used in this run was 8388608.
+==52905== 
+==52905== HEAP SUMMARY:
+==52905==     in use at exit: 277,594 bytes in 1,165 blocks
+==52905==   total heap usage: 1,492 allocs, 327 frees, 453,242 bytes allocated
+==52905== 
+==52905== LEAK SUMMARY:
+==52905==    definitely lost: 0 bytes in 0 blocks
+==52905==    indirectly lost: 0 bytes in 0 blocks
+==52905==      possibly lost: 2,672 bytes in 3 blocks
+==52905==    still reachable: 274,922 bytes in 1,162 blocks
+==52905==         suppressed: 0 bytes in 0 blocks
+==52905== Rerun with --leak-check=full to see details of leaked memory
+==52905== 
+==52905== For lists of detected and suppressed errors, rerun with: -s
+==52905== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

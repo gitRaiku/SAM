@@ -8,7 +8,7 @@
 #include "sam.h"
 #include "str.h"
 
-#define LOG(...) fprintf(stdout, __VA_ARGS__);
+#define LOG(str, ...) fprintf(stdout, str "\n" __VA_OPT__(,)  __VA_ARGS__);
 
 enum { pR = 23, pD = 57, pT = 69, BREAK = 254, END = 255 };
 
@@ -197,7 +197,7 @@ void CopyStress() {
 void Insert(unsigned char position /*var57*/, unsigned char mem60,
             unsigned char mem59, unsigned char mem58) {
   int i;
-  for (i = phonemeLength->c - 1; i >= position; i--) // ML : always keep last safe-guarding 255
+  for (i = max(max(phonemeindex->hs, phonemeLength->hs), stress->hs); i >= position; i--) // ML : always keep last safe-guarding 255
   {
     strs(phonemeindex, i + 1, G(phonemeindex,i));
     strs(phonemeLength, i + 1, G(phonemeLength,i));
@@ -290,14 +290,11 @@ signed int wild_match(unsigned char sign1) {
 // The character <0x9B> marks the end of text in input[]. When it is reached,
 // the index 255 is placed at the end of the phonemeIndexTable[], and the
 // function returns with a 1 indicating success.
-#define ST(_n) fprintf(stdout, "START : " #_n "\n");
-#define ED(_n) fprintf(stdout, "ED : " #_n "\n");
 int Parser1() {
   unsigned char sign1;
   unsigned char position = 0;
   unsigned char srcpos = 0;
 
-  ST(Parser1);
   while ((sign1 = G(input,srcpos)) != 155) { // 155 (\233) is end of line marker
     signed int match;
     unsigned char sign2 = G(input,++srcpos);
@@ -328,7 +325,6 @@ int Parser1() {
 
   fprintf(stdout, "Printed END at %u\n", position);
   strs(phonemeindex, position, END);
-  ED(Parser1);
   return 1;
 }
 
@@ -457,6 +453,7 @@ void rule_g(unsigned char pos) {
 
 void change(unsigned char pos, unsigned char val, const char *rule) {
   drule(rule);
+  LOG("Change %u -> %u", pos, val);
   strs(phonemeindex, pos, val);
 }
 
@@ -487,7 +484,6 @@ void Parser2() {
   unsigned char pos = 0; // mem66;
   unsigned char p;
 
-  ST(Parser2);
   if (debug)
     printf("Parser2\n");
 
@@ -578,6 +574,7 @@ void Parser2() {
           printf("RULE: S* %c%c -> S* %c%c\n", signInputTable1[p],
                  signInputTable2[p], signInputTable1[p - 12],
                  signInputTable2[p - 12]);
+        LOG("Change pindex: %u %u\n", pos, p - 12);
         strs(phonemeindex, pos, p - 12);
       } else if (!(pf & FLAG_PLOSIVE)) {
         p = G(phonemeindex,pos);

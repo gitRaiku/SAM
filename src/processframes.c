@@ -8,14 +8,14 @@ extern unsigned char sinus[];
 extern unsigned char rectangle[];
 
 // From render.c
-extern unsigned char pitches[256];
-extern unsigned char sampledConsonantFlag[256]; // tab44800
-extern unsigned char amplitude1[256];
-extern unsigned char amplitude2[256];
-extern unsigned char amplitude3[256];
-extern unsigned char frequency1[256];
-extern unsigned char frequency2[256];
-extern unsigned char frequency3[256];
+extern struct str *pitches;
+extern struct str *sampledConsonantFlag; // tab44800
+extern struct str *amplitude1;
+extern struct str *amplitude2;
+extern struct str *amplitude3;
+extern struct str *frequency1;
+extern struct str *frequency2;
+extern struct str *frequency3;
 
 extern void Output(int index, unsigned char A);
 
@@ -24,12 +24,12 @@ static void CombineGlottalAndFormants(unsigned char phase1,
                                       unsigned char phase3, unsigned char Y) {
   unsigned int tmp;
 
-  tmp = multtable[sinus[phase1] | amplitude1[Y]];
-  tmp += multtable[sinus[phase2] | amplitude2[Y]];
+  tmp = multtable[sinus[phase1] | G(amplitude1, Y)];
+  tmp += multtable[sinus[phase2] | G(amplitude2, Y)];
   tmp += tmp > 255
              ? 1
              : 0; // if addition above overflows, we for some reason add one;
-  tmp += multtable[rectangle[phase3] | amplitude3[Y]];
+  tmp += multtable[rectangle[phase3] | G(amplitude3, Y)];
   tmp += 136;
   tmp >>= 4; // Scale down to 0..15 range of C64 audio.
 
@@ -54,11 +54,12 @@ void ProcessFrames(unsigned char mem48) {
 
   unsigned char Y = 0;
 
-  unsigned char glottal_pulse = pitches[0];
+  unsigned char glottal_pulse = G(pitches, 0);
   unsigned char mem38 = glottal_pulse - (glottal_pulse >> 2); // mem44 * 0.75
 
   while (mem48) {
-    unsigned char flags = sampledConsonantFlag[Y];
+    unsigned char flags = G(sampledConsonantFlag, Y);
+    fprintf(stdout, "FLAGS: %2x\n", flags);
 
     // unvoiced sampled phoneme?
     if (flags & 248) {
@@ -90,9 +91,9 @@ void ProcessFrames(unsigned char mem48) {
         // is the count non-zero and the sampled flag is zero?
         if ((mem38 != 0) || (flags == 0)) {
           // reset the phase of the formants to match the pulse
-          phase1 += frequency1[Y];
-          phase2 += frequency2[Y];
-          phase3 += frequency3[Y];
+          phase1 += G(frequency1, Y);
+          phase2 += G(frequency2, Y);
+          phase3 += G(frequency3, Y);
           continue;
         }
 
@@ -103,7 +104,7 @@ void ProcessFrames(unsigned char mem48) {
       }
     }
 
-    glottal_pulse = pitches[Y];
+    glottal_pulse = G(pitches, Y);
     mem38 = glottal_pulse - (glottal_pulse >> 2); // mem44 * 0.75
 
     // reset the formant wave generators to keep them in
