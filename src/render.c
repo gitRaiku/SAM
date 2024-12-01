@@ -40,7 +40,7 @@ unsigned char trans(unsigned char a, unsigned char b) {
 
 // contains the final soundbuffer
 extern int bufferpos;
-extern char *buffer;
+extern struct str *buffer;
 
 // timetable for more accurate c64 simulation
 static const int timetable[5][5] = {{162, 167, 167, 127, 128},
@@ -56,7 +56,7 @@ void Output(int index, unsigned char A) {
   oldtimetableindex = index;
   // write a little bit in advance
   for (k = 0; k < 5; k++)
-    buffer[bufferpos / 50 + k] = (A & 15) * 16;
+    strs(buffer, bufferpos / 50 + k, (A & 15) * 16);
 }
 
 static unsigned char RenderVoicedSample(unsigned short hi, unsigned char off,

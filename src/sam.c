@@ -41,7 +41,7 @@ void SetMouth(unsigned char _mouth) { mouth = _mouth; };
 void SetThroat(unsigned char _throat) { throat = _throat; };
 void EnableSingmode() { singmode = 1; };
 struct str *__restrict GetBuffer() { return buffer; };
-uint32_t GetBufferLength() { return buffer->c; };
+uint32_t GetBufferLength() { return bufferpos; };
 
 void Init();
 int Parser1();

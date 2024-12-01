@@ -57,9 +57,10 @@ void ProcessFrames(unsigned char mem48) {
   unsigned char glottal_pulse = G(pitches, 0);
   unsigned char mem38 = glottal_pulse - (glottal_pulse >> 2); // mem44 * 0.75
 
+  uint32_t cnt = 0;
   while (mem48) {
     unsigned char flags = G(sampledConsonantFlag, Y);
-    fprintf(stdout, "FLAGS: %2x\n", flags);
+    fprintf(stdout, "FLAGS: %2x %u\n", flags, cnt++);
 
     // unvoiced sampled phoneme?
     if (flags & 248) {

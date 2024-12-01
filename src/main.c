@@ -107,12 +107,13 @@ void PrintUsage() {
 
 int pos = 0;
 void MixAudio(void *unused, Uint8 *stream, int len) {
+  int bufferpos = GetBufferLength();
   struct str *buffer = GetBuffer();
   int i;
-  if (pos >= buffer->c)
+  if (pos >= bufferpos)
     return;
-  if ((buffer->c - pos) < len)
-    len = (buffer->c - pos);
+  if ((bufferpos - pos) < len)
+    len = (bufferpos - pos);
   for (i = 0; i < len; i++) {
     stream[i] = G(buffer,pos);
     pos++;
@@ -120,8 +121,9 @@ void MixAudio(void *unused, Uint8 *stream, int len) {
 }
 
 void OutputSound() {
+  int bufferpos = GetBufferLength();
   struct str *buffer = GetBuffer();
-  buffer->c /= 50;
+  bufferpos /= 50;
   SDL_AudioSpec fmt;
 
   fmt.freq = 22050;
@@ -139,7 +141,7 @@ void OutputSound() {
   SDL_PauseAudio(0);
   // SDL_Delay((bufferpos)/7);
 
-  while (pos < buffer->c) {
+  while (pos < bufferpos) {
     SDL_Delay(100);
   }
 
