@@ -37,7 +37,7 @@ void PrintOutput(struct str *flag, struct str *f1, struct str *f2,
   printf("Final data for speech output:\n\n");
   printf(" flags ampl1 freq1 ampl2 freq2 ampl3 freq3 pitch\n");
   printf("------------------------------------------------\n");
-  while (i < 255) {
+  while (i <= a1->hs) {
     printf("%5i %5i %5i %5i %5i %5i %5i %5i\n", G(flag, i), G(a1, i), G(f1, i), G(a2, i),
            G(f2, i), G(a3, i), G(f3, i), G(p, i));
     i++;

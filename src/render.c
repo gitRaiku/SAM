@@ -168,7 +168,7 @@ void RenderSample(uint32_t *mem66, uint32_t consonantFlag,
     pitchl = G(pitches, mem49) >> 4;
     *mem66 = RenderVoicedSample(hi, *mem66, pitchl ^ 255);
   } else {
-    fprintf(stdout, "RenderUnvoiced: %u %u -> %u\n", hi, pitchl ^ 255, hi + (pitchl ^ 255));
+    if (debug) { fprintf(stdout, "RenderUnvoiced: %u %u -> %u\n", hi, pitchl ^ 255, hi + (pitchl ^ 255)); }
     RenderUnvoicedSample(hi, pitchl ^ 255, tab48426[hibyte]);
   }
 }
@@ -192,7 +192,7 @@ static void CreateFrames() {
 
     // if terminal phoneme, exit the loop
     if (phoneme == 255) {
-      fprintf(stdout, "Broke out at %u\n", i);
+      if (debug) { fprintf(stdout, "Broke out at %u\n", i); }
       break;
     }
 
@@ -231,7 +231,7 @@ static void CreateFrames() {
 //
 void RescaleAmplitude() {
   int i;
-  for (i = 255; i >= 0; i--) {
+  for (i = amplitude1->hs; i >= 0; i--) {
     strs(amplitude1, i, amplitudeRescale[G(amplitude1, i)]);
     strs(amplitude2, i, amplitudeRescale[G(amplitude2, i)]);
     strs(amplitude3, i, amplitudeRescale[G(amplitude3, i)]);
@@ -246,8 +246,8 @@ void RescaleAmplitude() {
 
 void AssignPitchContour() {
   int i;
-  strs(pitches, 900, 0);
-  for (i = 0; i < 256; i++) {
+  strs(pitches, max(pitches->hs, frequency1->hs) + 20, 0);
+  for (i = 0; i <= pitches->hs; i++) {
     // subtract half the frequency of the formant 1.
     // this adds variety to the voice
     pitches->s[i] -= (G(frequency1, i) >> 1);

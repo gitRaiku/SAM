@@ -4,6 +4,8 @@
 
 #include "str.h"
 
+extern int debug;
+
 // CREATE TRANSITIONS
 //
 // Linear transitions are now created to smoothly connect each
@@ -89,7 +91,7 @@ uint32_t Read(uint32_t p, uint32_t Y) {
 }
 
 void Write(uint32_t p, uint32_t Y, uint32_t value) {
-  fprintf(stdout, "Write %u %u %u\n", p, Y, value);
+  if (debug) { fprintf(stdout, "Write %u %u %u\n", p, Y, value); }
   switch (p) {
   case 168:
     strs(pitches, Y, value);
@@ -125,7 +127,7 @@ void interpolate(uint8_t width, uint32_t table, uint32_t frame,
                                  /// $11 = -2 '\376'
                                  /// (gdb) p (int8_t)(((int8_t)-12)/((uint8_t)8))
                                  /// $12 = -1 '\377'
-  fprintf(stdout, "Interpolate: %x %x %x %x\n", width, table, frame, mem53);
+  if (debug) { fprintf(stdout, "Interpolate: %x %x %x %x\n", width, table, frame, mem53); }
   uint8_t sign = (mem53 < 0);
   uint8_t remainder = abs(mem53) % width;
   uint8_t div = mem53 / width;

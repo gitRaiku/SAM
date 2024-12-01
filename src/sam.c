@@ -103,11 +103,11 @@ void PrepareOutput() {
     strs(phonemeIndexOutput, destpos, A);
     switch (A) {
       case END:
-        fprintf(stdout, "Hit END\n");
+        if (debug) { fprintf(stdout, "Hit END\n"); }
         Render();
         return;
       case BREAK:
-        fprintf(stdout, "BREAK %u %u\n", destpos, END);
+        if (debug) { fprintf(stdout, "BREAK %u %u\n", destpos, END); }
         strs(phonemeIndexOutput, destpos, END);
         Render();
         destpos = 0;
