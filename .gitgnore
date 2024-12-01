@@ -1,0 +1,5 @@
+*.log
+vgcore*
+*.o
+sam
+
