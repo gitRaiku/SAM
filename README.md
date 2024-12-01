@@ -1,8 +1,7 @@
 SAM
 ===
 
-Software Automatic Mouth - Tiny Speech Synthesizer 
-
+This is a fork of [vidarg's sam fork](https://github.com/vidarh/SAM) which replaces all of the 256 max length static buffers with dynamically allocated ones to allow sam to process arbitrary length text.
 
 What is SAM?
 ============
