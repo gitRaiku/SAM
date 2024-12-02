@@ -14,17 +14,20 @@ LFLAGS = `sdl-config --libs`
 #CFLAGS =  -Wall -O2
 #LFLAGS = 
 
+$(OBJ_DIR):
+	mkdir $@
+
 sam: $(OBJS)
 	$(CC) -o sam $(OBJS) $(LFLAGS)
 
-$(OBJ_DIR)/%.o: src/%.c
+$(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 package: 
 	tar -cvzf sam.tar.gz README.md Makefile sing src/
 
-ARG=-sing -pitch 64 -phonetic ohohoh
-# ARG=I love pears one 129 thyme kees
+# ARG=-sing -pitch 64 -phonetic ohohoh
+ARG=Thank you for running SAM
 # ARG=one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour twentyfive twentysix twentyseven twentyeight twentynine thirty thirtyone thirtytwo thirtythree thirtyfour thirtyfive thirtysix thirtyseven thirtyeight thirtynine forty fortyone fortytwo fortythree fortyfour fortyfive fortysix fortyseven fortyeight fortynine fifty fiftyone fiftytwo fiftythree fiftyfour fiftyfive fiftysix fiftyseven fiftyeight fiftynine
 run: sam
 	./sam $(ARG)
@@ -38,4 +41,4 @@ valgrind: sam
 
 clean:
 	rm -f *.o
-	rm -f .obj/*.o
+	rm -rf .obj
